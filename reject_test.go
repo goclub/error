@@ -13,7 +13,6 @@ func TestReject_Error(t *testing.T) {
 		panic(err)
 	}
 	assert.Equal(t,xerr.NewReject(data, true).Error(), `{"type":"pass"}`)
-
 	testInterface := func(err error) {/* 编译期不报错即可 */}
 	testInterface(xerr.NewReject(nil, false))
 }
