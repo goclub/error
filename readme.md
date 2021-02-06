@@ -35,7 +35,7 @@
 在日常开发中我们也应该避免写出类似的滥用 error 代码。
 
 
-# Sentinel Error
+## Sentinel Error
 
 ```go
 // Sentinel Error
