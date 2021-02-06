@@ -33,7 +33,7 @@ func NewsCreate(title string) error {
 	if len(title) == 0 {
 		return errors.New("title必填")
 	}
-		_, err := http.PostForm("http://www.someerrorapi.com/news_create?ak=abc&sk=password", url.Values{"title":[]string{title}}) ; if err != nil {
+	_, err := http.PostForm("http://www.someerrorapi.com/news_create?ak=abc&sk=password", url.Values{"title":[]string{title}}) ; if err != nil {
 		return err
 	}
 	return nil
