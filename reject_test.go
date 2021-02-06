@@ -1,6 +1,7 @@
 package xerr_test
 
 import (
+	"database/sql"
 	"encoding/json"
 	xerr "github.com/goclub/error"
 	xjson "github.com/goclub/json"
@@ -83,3 +84,9 @@ func NewFail(msg string) []byte {
 	}
 	return  data
 }
+
+func QueryRow(sql string, v interface{}) error {
+	return nil
+}
+
+
