@@ -1,10 +1,9 @@
 package xerr_test
 
 import (
-	"database/sql"
 	"encoding/json"
+	"fmt"
 	xerr "github.com/goclub/error"
-	xjson "github.com/goclub/json"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -18,19 +17,19 @@ func TestReject_Error(t *testing.T) {
 	testInterface := func(err error) {/* 编译期不报错即可 */}
 	testInterface(xerr.NewReject(nil, false))
 }
-func TestErrorToReject(t *testing.T) {
+func TestAsReject(t *testing.T) {
 	{
 		var err error
 		err = nil
-		reject, isReject := xerr.ErrorToReject(err)
-		assert.Equal(t,reject, xerr.NewReject(nil, false))
+		reject, isReject := xerr.AsReject(err)
+		assert.Nil(t, reject)
 		assert.Equal(t,isReject, false)
 	}
 	{
 		err := func () error {
 			return xerr.NewReject([]byte("abc"), false)
 		}()
-		reject, isReject := xerr.ErrorToReject(err)
+		reject, isReject := xerr.AsReject(err)
 		assert.Equal(t,reject, xerr.NewReject([]byte("abc"), false))
 		assert.Equal(t,isReject, true)
 	}
@@ -38,7 +37,7 @@ func TestErrorToReject(t *testing.T) {
 		err := func () error {
 			return xerr.NewReject([]byte("abc"), true)
 		}()
-		reject, isReject := xerr.ErrorToReject(err)
+		reject, isReject := xerr.AsReject(err)
 		assert.Equal(t,reject, xerr.NewReject([]byte("abc"), true))
 		assert.Equal(t,isReject, true)
 	}
@@ -49,13 +48,30 @@ func Some() error {
 	// return nil
 }
 func TestReject(t *testing.T) {
-	err := Some()
-	assert.NotNil(t, err)
-	reject, isReject := xerr.ErrorToReject(err)
-	assert.Equal(t, isReject, true)
-	assert.Equal(t, reject, xerr.NewReject(NewFail("用户不存在"), false))
+	{
+		err := Some()
+		assert.NotNil(t, err)
+		reject, isReject := xerr.AsReject(err)
+		assert.Equal(t, isReject, true)
+		assert.Equal(t, reject, xerr.NewReject(NewFail("用户不存在"), false))
+	}
+	{
+		err := a()
+		assert.NotNil(t, err)
+		reject, isReject := xerr.AsReject(err)
+		assert.Equal(t, isReject, true)
+		assert.Equal(t, reject, xerr.NewReject([]byte("b"), false))
+		assert.Equal(t, err.Error(), "a: b")
+	}
+}
+func a() error {
+	err  := b()
+	return fmt.Errorf("a: %w", err)
 }
 
+func b() error {
+	return xerr.NewReject([]byte("b"), false)
+}
 type ResponseType string
 func (v ResponseType) Enum() (enum struct{
 	Pass ResponseType
@@ -76,7 +92,7 @@ func NewPass(data interface{}) Response {
 	}
 }
 func NewFail(msg string) []byte {
-	data, err := xjson.Marshal(Response{
+	data, err := json.Marshal(Response{
 		Type: Response{}.Type.Enum().Fail,
 		Msg: msg,
 	}) ; if err != nil {

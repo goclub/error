@@ -34,39 +34,53 @@
 
 在日常开发中我们也应该避免写出类似的滥用 error 代码。
 
+## fmt.Errorf
+
+可以通过 `fmt.Errorf` 包装错误后传递给上层，附带更多信息。
+
+```go
+err := some() if err !+ nil {
+	return fmt.Errorf("abc: %w", err)
+}
+```
+
+包装后直接使用 `err == pakcgaeName.ErrSome` 判断会失败，可以通过 `errors.Unwrap()` `errors.Is())` 解决。
 
 ## Sentinel Error
 
 ```go
 // Sentinel Error
 if err != nil {
-	if err == packageName.ErrName {
+	if errors.Is(packageName.ErrName) {
       // do some	
     } else {
     	return err
     }
 }
-```
+```   
 
 通过比对 Sentinel Error 的方式判断需要借助文档才能弄清楚有哪些错误。
 
-
 ## 使用自定义错误类型携带更多的信息
+
+os标准库有很多自定义错误类型的用法： [path_error|embed](./docs/path_error/main.go)
+
+判断错误类型的方式的缺点是不够直观，要基于约定和文档才能知道该如何判断错误。但这不妨碍在某些场景下使用自定义错误类型。
+
+为了解决自定义类型被 `fmt.Errorf` 后类型断言不准确的问题，使用`errors.As()` 进行判断
+
+
+## reject
 
 在日常的开发中有很多业务逻辑信息需要传递给客户端，例如创建用户时手机号码已存在。
 如果逻辑层函数返回 `errors.New("手机号码已存在")` 给协议层（http, rpc ）虽然能实现但是传递的信息太少，并且不安全。
-因为协议层无法判断当前的错误是业务逻辑信息还是其他IO错误，例如 :
+因为协议层无法判断当前的错误是业务逻辑信息还是其他io错误，例如 :
 
 [reject|embed](./docs/reject/main.go)
 
 源码实现非常简单,感兴趣可以看看
 
 [源码|embed](./reject.go)
-
-判断错误类型的方式的缺点是不够直观，要基于约定和文档才能知道该如何判断错误。但这不妨碍在某些场景下使用自定义错误类型。
-
-os标准库也有类似自定义错误类型的用法： [path_error|embed](./docs/path_error/main.go)
-
 
 ## 最佳实践
 

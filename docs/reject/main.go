@@ -62,7 +62,7 @@ func main () {
 	mux.HandleFunc("/safe_reject", func(writer http.ResponseWriter, request *http.Request) {
 		err := CreateUserSafeReject(request.URL.Query().Get("name"))
 		if err != nil {
-			reject, isReject := xerr.ErrorToReject(err)
+			reject, isReject := xerr.AsReject(err)
 			if isReject {
 				if reject.ShouldRecord { log.Print(reject) }
 				WriteBytes(writer, reject.Response) ; return
