@@ -1,6 +1,8 @@
 package xerr
 
-import "errors"
+import (
+	"errors"
+)
 
 type reject struct {
 	Response []byte
@@ -9,8 +11,8 @@ type reject struct {
 func (reject *reject) Error() string {
 	return string(reject.Response)
 }
-func AsReject(err error) (rejectValue *reject, isReject bool) {
-	isReject = errors.As(err, &rejectValue)
+func AsReject(err error) (rejectValue *reject, asReject bool) {
+	asReject = errors.As(err, &rejectValue)
 	return
 }
 func NewReject(response []byte, shouldRecord bool) error {

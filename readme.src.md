@@ -1,9 +1,9 @@
-# error
+# goclub/error
 
 
 ## error  和 panic
 
-> 只要执行 panic 就极大可能导致程序中断进程退出  
+> 只要执行 panic 就极大可能导致程序中断进程退出
 
 在 Web Server 服务中只有启动程序时才应该出现 panic 代码。
 
@@ -11,11 +11,15 @@
 
 [panic_on_startup|embed](./docs/panic_on_startup/main.go)
 
-在 main 函数中 如果出现数据库连接错误是无法处理的所以使用panic。
+在 main 函数中 如果出现数据库连接错误是无法处理的所以使用 `panic`。
 
 > 在某些场景下为了解决数据库偶尔连接失败但立即会恢复正常的情况，会在 db.Ping() 错误时不panic,而是记录日志报警。
 
-例如某个URL 解析参数错误
+---
+
+非启动代码则不会使用 panic
+
+例如某个 http 接口解析参数时错误
 
 [http_query_parse_error|embed](./docs/http_query_parse_error/main.go)
 
@@ -25,7 +29,6 @@
 
 应该记住 **只要执行 panic 就有极大可能中断程序**。
    
-
 ## 避免 sql.ErrNoRows 这种错误的设计
 
 [err_no_rows_is_bad_desgin|embed](./docs/err_no_rows_is_bad_desgin/main.go)
@@ -68,7 +71,6 @@ os标准库有很多自定义错误类型的用法： [path_error|embed](./docs/
 判断错误类型的方式的缺点是不够直观，要基于约定和文档才能知道该如何判断错误。但这不妨碍在某些场景下使用自定义错误类型。
 
 为了解决自定义类型被 `fmt.Errorf` 后类型断言不准确的问题，使用`errors.As()` 进行判断
-
 
 ## reject
 
