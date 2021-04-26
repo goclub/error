@@ -219,11 +219,13 @@ package main
 
 import (
 	"context"
+	"fmt"
 	xerr "github.com/goclub/error"
 	xhttp "github.com/goclub/http"
-	"github.com/pkg/errors"
+	"errors"
 	"log"
 	"net/http"
+	"runtime/debug"
 	"strconv"
 )
 
@@ -252,13 +254,14 @@ func CreateUserUnsafeError(name string) error {
 }
 func CreateUserSafeReject(name string) error {
 	if name == "admin" {
-		return xerr.NewReject([]byte("name can not be admin"), false)
+		// 没有 code 时 传 0
+		return xerr.NewReject(0, "name can not be admin", false)
 	}
 	ak := "nimoc"
 	sk := "1234"
 	url := "http://www.exist-domain-only-test.com/create_user?ak=" + ak +"&sk=" + sk
 	_, bodyClose, statusCode, err := client.Send(context.TODO(), "GET", url, xhttp.SendRequest{}) ; if err != nil {
-		return err
+		return fmt.Errorf("create user:%w, err")
 	}
 	defer bodyClose()
 	if statusCode != 200 {
@@ -279,14 +282,15 @@ func main () {
 	mux.HandleFunc("/safe_reject", func(writer http.ResponseWriter, request *http.Request) {
 		err := CreateUserSafeReject(request.URL.Query().Get("name"))
 		if err != nil {
-			reject, isReject := xerr.AsReject(err)
-			if isReject {
+			if reject, asReject := xerr.AsReject(err); asReject {
 				if reject.ShouldRecord { log.Print(reject) }
-				WriteBytes(writer, reject.Response) ; return
+				WriteBytes(writer, []byte("code("+ strconv.Itoa(int(reject.Code)) + ") " + reject.Message)) ; return
+			} else {
+				debug.PrintStack()
+				log.Print(err)
+				// writer.WriteHeader(500)
+				WriteBytes(writer, []byte("server error")) ; return
 			}
-			log.Print(err)
-			// writer.WriteHeader(500)
-			WriteBytes(writer, []byte("server error")) ; return
 		}
 		WriteBytes(writer, []byte("ok"))
 	})
@@ -327,7 +331,6 @@ func NewReject(response []byte, shouldRecord bool) error {
 		ShouldRecord: shouldRecord,
 	}
 }
-
 ```
 
 ## 最佳实践

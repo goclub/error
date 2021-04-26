@@ -37,7 +37,8 @@ func CreateUserUnsafeError(name string) error {
 }
 func CreateUserSafeReject(name string) error {
 	if name == "admin" {
-		return xerr.NewReject([]byte("name can not be admin"), false)
+		// 没有 code 时 传 0
+		return xerr.NewReject(0, "name can not be admin", false)
 	}
 	ak := "nimoc"
 	sk := "1234"
@@ -66,7 +67,7 @@ func main () {
 		if err != nil {
 			if reject, asReject := xerr.AsReject(err); asReject {
 				if reject.ShouldRecord { log.Print(reject) }
-				WriteBytes(writer, reject.Response) ; return
+				WriteBytes(writer, []byte("code("+ strconv.Itoa(int(reject.Code)) + ") " + reject.Message)) ; return
 			} else {
 				debug.PrintStack()
 				log.Print(err)
