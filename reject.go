@@ -2,22 +2,25 @@ package xerr
 
 import (
 	"errors"
+	"strconv"
 )
 
 type reject struct {
-	Response []byte
+	Code int32
+	Message string
 	ShouldRecord bool
 }
-func (reject *reject) Error() string {
-	return string(reject.Response)
+func (reject reject) Error() string {
+	return strconv.Itoa(int(reject.Code))+ ":" + reject.Message
 }
 func AsReject(err error) (rejectValue *reject, asReject bool) {
 	asReject = errors.As(err, &rejectValue)
 	return
 }
-func NewReject(response []byte, shouldRecord bool) error {
+func NewReject(code int32, message string, shouldRecord bool) error {
 	return &reject{
-		Response: response,
+		Code: code,
+		Message: message,
 		ShouldRecord: shouldRecord,
 	}
 }
