@@ -21,6 +21,8 @@ func TestAsReject(t *testing.T) {
 		reject, isReject := xerr.AsReject(err)
 		assert.Equal(t,reject, xerr.NewReject(0, "abc", false))
 		assert.Equal(t,isReject, true)
+		xerr.TestEqualCode(t, err, 0)
+
 	}
 	{
 		err := func () error {
