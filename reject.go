@@ -1,7 +1,6 @@
 package xerr
 
 import (
-	"errors"
 	"github.com/stretchr/testify/assert"
 	"strconv"
 	"testing"
@@ -16,7 +15,7 @@ func (reject reject) Error() string {
 	return strconv.Itoa(int(reject.Code))+ ":" + reject.Message
 }
 func AsReject(err error) (rejectValue *reject, asReject bool) {
-	asReject = errors.As(err, &rejectValue)
+	asReject = As(err, &rejectValue)
 	return
 }
 func Reject(code int32, message string, shouldRecord bool) error {

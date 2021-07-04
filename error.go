@@ -1,42 +1,28 @@
 package xerr
 
 import (
-	"fmt"
-	"golang.org/x/xerrors"
+	pkgErr "github.com/pkg/errors"
 )
 
-func New(text string) error {
-	return xerrors.New(text)
-}
-
-func Is(err, target error) bool {
-	return xerrors.Is(err, target)
-}
-func Unwrap(err error) error {
-	return xerrors.Unwrap(err)
-}
+var (
+	// 创建错误
+	New    = pkgErr.New
+	// 通过format 创建错误
+	Errorf = pkgErr.Errorf
+	// 判断 Sentinel Error
+	Is     = pkgErr.Is
+	// 判断自定义错误
+	As     = pkgErr.As
+)
+// 包装错误
 func WrapPrefix(prefix string, err error) error {
-	return fmt.Errorf(prefix + "%w", err)
-
+	return pkgErr.Wrap(err, prefix)
 }
-func Errorf(format string, a ...interface{}) error {
-	return xerrors.Errorf(format, a...)
-}
-func As(err error, target interface{}) bool {
-	return xerrors.As(err, target)
-}
-type Frame xerrors.Frame
-func Caller(skip int) Frame{
-	return Frame(xerrors.Caller(skip))
-}
-type Formatter interface {
-	error
-	FormatError(p xerrors.Printer) (next error)
-}
-
-func FormatError(f Formatter, s fmt.State, verb rune) {
-	xerrors.FormatError(f, s, verb)
-}
-func Opaque(err error) error {
-	return xerrors.Opaque(err)
+// 获取被包装的底层错误
+func Unwrap(err error) error{
+	e := pkgErr.Cause(err)
+	if e != nil {
+		return e
+	}
+	return pkgErr.Unwrap(err)
 }
