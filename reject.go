@@ -19,7 +19,7 @@ func AsReject(err error) (rejectValue *reject, asReject bool) {
 	asReject = errors.As(err, &rejectValue)
 	return
 }
-func NewReject(code int32, message string, shouldRecord bool) error {
+func Reject(code int32, message string, shouldRecord bool) error {
 	return &reject{
 		Code: code,
 		Message: message,
