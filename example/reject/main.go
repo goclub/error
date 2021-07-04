@@ -5,7 +5,6 @@ import (
 	"fmt"
 	xerr "github.com/goclub/error"
 	xhttp "github.com/goclub/http"
-	"errors"
 	"log"
 	"net/http"
 	"runtime/debug"
@@ -22,33 +21,35 @@ var client = xhttp.NewClient(&http.Client{})
 func CreateUserUnsafeError(name string) error {
 	ak := "nimoc"
 	sk := "1234"
-	url := "http://www.exist-domain-only-test.com/create_user?ak=" + ak +"&sk=" + sk
+	url := "/create_user?ak=" + ak +"&sk=" + sk
+	origin := "http://www.exist-domain-only-test.com"
 	if name == "admin" {
-		return errors.New("name can not be admin")
+		return xerr.New("name can not be admin")
 	}
-	_, bodyClose, statusCode, err := client.Send(context.TODO(), "GET", url, xhttp.SendRequest{}) ; if err != nil {
+	_, bodyClose, statusCode, err := client.Send(context.TODO(), "GET", origin, url, xhttp.SendRequest{}) ; if err != nil {
 		return err
 	}
 	defer bodyClose()
 	if statusCode != 200 {
-		return errors.New("statusCode error:" + strconv.Itoa(statusCode))
+		return xerr.New("statusCode error:" + strconv.Itoa(statusCode))
 	}
 	return nil
 }
 func CreateUserSafeReject(name string) error {
 	if name == "admin" {
 		// 没有 code 时 传 0
-		return xerr.NewReject(0, "name can not be admin", false)
+		return xerr.Reject(0, "name can not be admin", false)
 	}
 	ak := "nimoc"
 	sk := "1234"
-	url := "http://www.exist-domain-only-test.com/create_user?ak=" + ak +"&sk=" + sk
-	_, bodyClose, statusCode, err := client.Send(context.TODO(), "GET", url, xhttp.SendRequest{}) ; if err != nil {
+	url := "/create_user?ak=" + ak +"&sk=" + sk
+	origin := "http://www.exist-domain-only-test.com"
+	_, bodyClose, statusCode, err := client.Send(context.TODO(), "GET", origin, url, xhttp.SendRequest{}) ; if err != nil {
 		return fmt.Errorf("create user:%w, err")
 	}
 	defer bodyClose()
 	if statusCode != 200 {
-		return errors.New("statusCode error:" + strconv.Itoa(statusCode))
+		return xerr.New("statusCode error:" + strconv.Itoa(statusCode))
 	}
 	return nil
 }
@@ -64,6 +65,7 @@ func main () {
 	})
 	mux.HandleFunc("/safe_reject", func(writer http.ResponseWriter, request *http.Request) {
 		err := CreateUserSafeReject(request.URL.Query().Get("name"))
+		// 你实现一些拦截器来避免重复代码.或者直接使用 github.com/goclub/http
 		if err != nil {
 			if reject, asReject := xerr.AsReject(err); asReject {
 				if reject.ShouldRecord { log.Print(reject) }

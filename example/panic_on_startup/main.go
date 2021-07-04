@@ -1,24 +1,24 @@
 package  main
 
 import (
-	"github.com/goclub/sql"
+	"context"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/goclub/sql"
 )
 
 func main () {
-	db, dbClose, err := sq.Open("mysql", sq.DataSourceName{
-		DriverName: "mysql",
+	db, dbClose, err := sq.Open("mysql", sq.MysqlDataSource{
 		User: "root",
-		Password:"somepass",
+		Password:"",
 		Host: "127.0.0.1",
 		Port:"3306",
 		DB: "test_goclub_sql",
-	}.String()) ; if err != nil {
+	}.FormatDSN()) ; if err != nil {
 		// 无法处理的错误
 		panic(err)
 	}
 	defer dbClose()
-	err = db.Ping() ; if err != nil {
+	err = db.Ping(context.TODO()) ; if err != nil {
 		// 无法处理的错误
 		panic(err)
 	}

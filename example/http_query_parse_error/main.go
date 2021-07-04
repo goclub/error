@@ -24,6 +24,7 @@ func main () {
 			log.Print(err)
 		}
 	})
+	log.Print("http://127.0.0.1:3000/")
 	err := http.ListenAndServe(":3000", mux) ; if err != nil {
 		// 服务无法启动必须 panic
 		panic(err)

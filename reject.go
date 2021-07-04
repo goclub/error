@@ -25,24 +25,10 @@ func Reject(code int32, message string, shouldRecord bool) error {
 		ShouldRecord: shouldRecord,
 	}
 }
-func TestEqualCode(t *testing.T, err error, code int32) {
+func EqualRejectCode(t *testing.T, err error, code int32) {
 	reject, asReject := AsReject(err)
 	assert.True(t, asReject, err.Error(), " not xerr.reject")
 	if asReject {
 		assert.Equal(t, reject.Code, code)
 	}
 }
-// func TestEqualMessage(t *testing.T, err error, message string) {
-// 	reject, asReject := AsReject(err)
-// 	assert.True(t, asReject, err.Error(), " not xerr.reject")
-// 	if asReject {
-// 		assert.Equal(t, reject.Message, message)
-// 	}
-// }
-// func TestEqualShouldRecord(t *testing.T, err error, shouldRecord bool) {
-// 	reject, asReject := AsReject(err)
-// 	assert.True(t, asReject, err.Error(), " not xerr.reject")
-// 	if asReject {
-// 		assert.Equal(t, reject.Message, shouldRecord)
-// 	}
-// }
