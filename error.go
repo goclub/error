@@ -2,6 +2,7 @@ package xerr
 
 import (
 	pkgErr "github.com/pkg/errors"
+	"log"
 )
 
 var (
@@ -25,4 +26,7 @@ func Unwrap(err error) error{
 		return e
 	}
 	return pkgErr.Unwrap(err)
+}
+func LogWithStack(err error) {
+	log.Printf("%+v", err)
 }
