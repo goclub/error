@@ -8,6 +8,8 @@ github.com/goclub/conv v0.0.0-20210212152229-4c7944a42840 h1:XGSWD0qFbSqWso8hrJU
 github.com/goclub/conv v0.0.0-20210212152229-4c7944a42840/go.mod h1:iAu2C+UiczzPo2c9enIIzM5xeLbvpbpPw8bzmL4xt80=
 github.com/goclub/error v0.0.0-20210704151306-244ff1f723cf h1:sSDCMrxIQ8VCMmRZ6j6HjTjKbSGCOPscflKPp7OY+VA=
 github.com/goclub/error v0.0.0-20210704151306-244ff1f723cf/go.mod h1:2ombCAL3uNuhVNevp56iOpelgiQIyxlYkz7t6nWEC18=
+github.com/goclub/error v0.0.0-20210705081342-878707467343 h1:nAd0dlT0YE/xM9SYtfhI7bg8UKYXmWmCLVTlq0UY7hU=
+github.com/goclub/error v0.0.0-20210705081342-878707467343/go.mod h1:2ombCAL3uNuhVNevp56iOpelgiQIyxlYkz7t6nWEC18=
 github.com/goclub/http v0.0.0-20210703123510-b5ac02e83397 h1:IzHQSaL56+zbQLur3QM9F9elriiohGzQ2tkCOmQVwZ4=
 github.com/goclub/http v0.0.0-20210703123510-b5ac02e83397/go.mod h1:Kfo+tnUk3s8XdEsLnG1+pgy9j6O9aY13Wd9xx0wiGqw=
 github.com/goclub/json v0.0.0-20201212033753-4350fe0a941e/go.mod h1:K7bX26XRz/QHEzyXUZNCYwN8yQsrfedeC1hhsE9HcRk=

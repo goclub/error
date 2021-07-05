@@ -16,8 +16,12 @@ func main () {
 	log.Print("xerr.WrapPrefix")
 	{
 		err := biz()
-		log .Print(err) // 简单错误 biz: db: sql: transaction has already been committed or rolled back
-		log .Printf("%+v", err) // 附带堆栈信息 biz: db: sql: transaction has already been committed or rolled back
+		// 简单错误 biz: db: sql: transaction has already been committed or rolled back
+		log.Print(err)
+
+		// 附带堆栈信息 biz: db: sql: transaction has already been committed or rolled back
+		// 等同于 log.Printf("%+v", err)
+		xerr.LogWithStack(err)
 
 		// 建议使用 xerr.Is 比较
 		log.Print(xerr.Unwrap(err) == sql.ErrTxDone) // true

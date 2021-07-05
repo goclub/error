@@ -22,6 +22,12 @@ go get github.com/goclub/error
 为了避免混淆 xerr 调用了pkg/error 部分方法,去掉了一些以后会不兼容或多余的方法.
 
 ```go
+package xerr
+
+import (
+	pkgErr "github.com/pkg/errors"
+	"log"
+)
 
 var (
 	// 创建错误
@@ -32,12 +38,23 @@ var (
 	Is     = pkgErr.Is
 	// 判断自定义错误
 	As     = pkgErr.As
-	// 获取底层错误
-	Unwrap = pkgErr.Unwrap
 )
+// 包装错误
 func WrapPrefix(prefix string, err error) error {
 	return pkgErr.Wrap(err, prefix)
 }
+// 获取被包装的底层错误
+func Unwrap(err error) error{
+	e := pkgErr.Cause(err)
+	if e != nil {
+		return e
+	}
+	return pkgErr.Unwrap(err)
+}
+func LogWithStack(err error) {
+	log.Printf("%+v", err)
+}
+
 ```
 
 
