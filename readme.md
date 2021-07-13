@@ -21,44 +21,7 @@ go get github.com/goclub/error
 但是 pkg/errors 的 package name 是 errors ,这导致经常与标准库 的 xerr.混淆.
 为了避免混淆 xerr 调用了pkg/error 部分方法,去掉了一些以后会不兼容或多余的方法.
 
-```go
-package xerr
-
-import (
-	pkgErr "github.com/pkg/errors"
-	"log"
-)
-
-var (
-	// 创建错误
-	New    = pkgErr.New
-	// 通过format 创建错误
-	Errorf = pkgErr.Errorf
-	// 判断 Sentinel Error
-	Is     = pkgErr.Is
-	// 判断自定义错误
-	As     = pkgErr.As
-)
-// 包装错误
-func WrapPrefix(prefix string, err error) error {
-	return pkgErr.Wrap(err, prefix)
-}
-// 获取被包装的底层错误
-func Unwrap(err error) error{
-	e := pkgErr.Cause(err)
-	if e != nil {
-		return e
-	}
-	return pkgErr.Unwrap(err)
-}
-func LogWithStack(err error) {
-	log.Printf("%+v", err)
-}
-
-```
-
-
-
+源码: [./error.go](./error.go)
 
 ## error  和 panic
 

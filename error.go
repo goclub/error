@@ -14,11 +14,13 @@ var (
 	Is     = pkgErr.Is
 	// 判断自定义错误
 	As     = pkgErr.As
+	WithStack = pkgErr.WithStack
 )
 // 包装错误
 func WrapPrefix(prefix string, err error) error {
 	return pkgErr.Wrap(err, prefix)
 }
+
 // 获取被包装的底层错误
 func Unwrap(err error) error{
 	e := pkgErr.Cause(err)
@@ -27,6 +29,6 @@ func Unwrap(err error) error{
 	}
 	return pkgErr.Unwrap(err)
 }
-func LogWithStack(err error) {
+func PrintStack(err error) {
 	log.Printf("%+v", err)
 }
