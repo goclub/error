@@ -5,7 +5,12 @@ import (
 	"strconv"
 	"testing"
 )
-
+type Resp struct {
+	Error struct {
+		Code int32 `json:"code"`
+		Message string `json:"message"`
+	} `json:"error"`
+}
 type reject struct {
 	Code int32
 	Message string
