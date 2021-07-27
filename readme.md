@@ -47,7 +47,9 @@ go get github.com/goclub/error
 应该记住 **只要执行 panic 就有极大可能中断程序**。
    
 
-## 避免 sql.ErrNoRows 这种错误的设计
+## sql.ErrNoRows 糟粕 
+
+应当 避免 sql.ErrNoRows 这种错误的设计
 
 [err_no_rows_is_bad_desgin](./example/err_no_rows_is_bad_desgin/main.go?embed)
 
