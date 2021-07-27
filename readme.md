@@ -2,7 +2,6 @@
 
 ```sh
 go get github.com/goclub/error
-
 ```
 
 ## 堆栈和包装
@@ -21,7 +20,7 @@ go get github.com/goclub/error
 但是 pkg/errors 的 package name 是 errors ,这导致经常与标准库 的 xerr.混淆.
 为了避免混淆 xerr 调用了pkg/error 部分方法,去掉了一些以后会不兼容或多余的方法.
 
-源码: [./error.go](./error.go)
+源码: [./error.go?embed](./error.go)
 
 ## error  和 panic
 
@@ -31,7 +30,7 @@ go get github.com/goclub/error
 
 例如启动时错误
 
-[panic_on_startup](./example/panic_on_startup/main.go)
+[panic_on_startup](./example/panic_on_startup/main.go?embed)
 
 在 main 函数中 如果出现数据库连接错误是无法处理的所以使用panic。
 
@@ -39,7 +38,7 @@ go get github.com/goclub/error
 
 例如某个URL 解析参数错误
 
-[http_query_parse_error](./example/http_query_parse_error/main.go)
+[http_query_parse_error](./example/http_query_parse_error/main.go?embed)
 
 如果在获取请求参数并转换为数字时错误就 panic 是没有必要的。
 因为 web 是面向很多用户的，不能因为某个接口被使用者传递了错误的参数就使用 panic 中断服务。
@@ -50,7 +49,7 @@ go get github.com/goclub/error
 
 ## 避免 sql.ErrNoRows 这种错误的设计
 
-[err_no_rows_is_bad_desgin](./example/err_no_rows_is_bad_desgin/main.go)
+[err_no_rows_is_bad_desgin](./example/err_no_rows_is_bad_desgin/main.go?embed)
 
 数据不存在应该明确的通过 bool 表达，而不是让使用者通过 `err == sq.ErrNoRows` 来判断。
 
@@ -75,7 +74,9 @@ if err != nil {
 
 ## 使用自定义错误类型携带更多的信息
 
-os标准库有很多自定义错误类型的用法： [path_error](./example/path_error/main.go)
+os标准库有很多自定义错误类型的用法： 
+
+[path_error](./example/path_error/main.go?embed)
 
 判断错误类型的方式的缺点是不够直观，要基于约定和文档才能知道该如何判断错误。但这不妨碍在某些场景下使用自定义错误类型。
 
@@ -90,12 +91,12 @@ os标准库有很多自定义错误类型的用法： [path_error](./example/pat
 
 使用 xerr.Reject() 创建可公开给用户的业务错误,使用 xerr.New 定义不公开的内部错误
 
-[reject](./example/reject/main.go)
+[reject](./example/reject/main.go?embed)
 
 
 源码实现非常简单,感兴趣可以看看
 
-[源码](./reject.go)
+[源码](./reject.go?embed)
 
 ## defer
 
