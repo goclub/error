@@ -61,6 +61,8 @@ go get github.com/goclub/error
 
 ## Sentinel Error
 
+Sentinel 是哨兵的意思,哨兵这个名字取得很难理解.只有看过示例代码才知道是什么意思.
+
 ```go
 // Sentinel Error
 if err != nil {
