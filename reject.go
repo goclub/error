@@ -6,10 +6,11 @@ import (
 	"testing"
 )
 type Resp struct {
-	Error struct {
-		Code int32 `json:"code"`
-		Message string `json:"message"`
-	} `json:"error"`
+	Error RespError `json:"error"`
+}
+type RespError struct {
+	Code int32 `json:"code"`
+	Message string `json:"message"`
 }
 type reject struct {
 	Code int32
