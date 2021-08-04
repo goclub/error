@@ -2,6 +2,7 @@ package xerr
 
 import (
 	"github.com/stretchr/testify/assert"
+	"log"
 	"strconv"
 	"testing"
 )
@@ -25,6 +26,10 @@ func AsReject(err error) (rejectValue *reject, asReject bool) {
 	return
 }
 func Reject(code int32, message string, shouldRecord bool) error {
+	if code == 0 {
+		log.Print("xerr.Reject(code, message, shouldRecord) code can not be zero")
+		code = 1
+	}
 	return &reject{
 		Code: code,
 		Message: message,
