@@ -17,7 +17,7 @@ go get github.com/goclub/error
 
 
 在go2没推出之前,还建议是使用 pkg/error 
-但是 pkg/errors 的 package name 是 errors ,这导致经常与标准库 的 xerr.混淆.
+但是 pkg/errors 的 package name 是 errors ,这导致经常与标准库 的 errors 混淆.
 为了避免混淆 xerr 调用了pkg/error 部分方法,去掉了一些以后会不兼容或多余的方法.
 
 源码: [./error.go?embed](./error.go)
