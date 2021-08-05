@@ -1,6 +1,6 @@
 # goclub/error
 
-```sh
+```shell
 go get github.com/goclub/error
 ```
 
