@@ -76,6 +76,8 @@ if err != nil {
 
 通过比对 Sentinel Error 的方式判断需要借助文档才能弄清楚有哪些错误。
 
+> 注意: 返回 Sentinel Error 时候应该配合 xerr.WithStack(ErrSome) 使用,否则会导致调用者找不到堆栈信息
+
 ## 使用自定义错误类型携带更多的信息
 
 os标准库有很多自定义错误类型的用法： 
