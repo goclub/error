@@ -72,11 +72,21 @@ if err != nil {
     	return err
     }
 }
-```   
+```
+
+> 使用标准库和 pkg/errors  的 errors.Is(err, target) 时 target 必须是 Sentinel Error, 因为 Is() 只对 err 进行 Unwrap 处理.
+> 使用 xerr.Is() 不用管顺序,这样能避免难以发现的bug.
 
 通过比对 Sentinel Error 的方式判断需要借助文档才能弄清楚有哪些错误。
 
 > 注意: 返回 Sentinel Error 时候应该配合 xerr.WithStack(ErrSome) 使用,否则会导致调用者找不到堆栈信息
+
+```go
+var ErrSome = errors.New("some")
+func f3() error {
+	return xerr.WithStack(ErrSome)
+}
+```
 
 ## 使用自定义错误类型携带更多的信息
 
@@ -157,7 +167,7 @@ func CorrectCode(i int) (err error) {
 
 ## 最佳实践
 
-1. 除了启动(main)或者初始化(init)代码不要使用 panic
+1. 除了启动(main)或者初始化(init)代码不要使用 panic ,尽量每个panic 代码旁都写上为什么 panic
 2. 避免出现 sql.ErrNoRows 这种滥用错误的设计
 3. 使用 xerr.New 和 xerr.Reject区分服务内部错误和公开业务错误,避免泄露敏感信息.
 4. 不知道如何处理的错误时向上传递
