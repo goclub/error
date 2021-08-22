@@ -17,6 +17,7 @@ type reject struct {
 	Code int32
 	Message string
 	ShouldRecord bool
+	*stack
 }
 func (reject reject) Error() string {
 	return strconv.Itoa(int(reject.Code))+ ":" + reject.Message
@@ -34,6 +35,7 @@ func Reject(code int32, message string, shouldRecord bool) error {
 		Code: code,
 		Message: message,
 		ShouldRecord: shouldRecord,
+		stack: callers(),
 	}
 }
 func EqualRejectCode(t *testing.T, err error, code int32) {
