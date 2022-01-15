@@ -16,7 +16,7 @@ func TestAsReject(t *testing.T) {
 	}
 	{
 		err := func () error {
-			return xerr.Reject(0, "abc", false)
+			return xerr.Reject(1, "abc", false)
 		}()
 		reject, isReject := xerr.AsReject(err)
 		assert.Equal(t,reject.Message, "abc")
@@ -26,14 +26,23 @@ func TestAsReject(t *testing.T) {
 	}
 	{
 		err := func () error {
-			return xerr.Reject(0, "abc", true)
+			return xerr.Reject(1, "abc", true)
 		}()
 		reject, isReject := xerr.AsReject(err)
 		assert.Equal(t,reject.Message, "abc")
 		assert.Equal(t,isReject, true)
 		assert.Equal(t,reject.Code, int32(1))
 	}
-	// xerr.PrintStack(a())
+	{
+		err := func () error {
+			return xerr.RejectWithPrivateDetails(1, "abc", xerr.PrivateDetails{"privateDetails"})
+		}()
+		reject, isReject := xerr.AsReject(err)
+		assert.Equal(t,reject.Message, "abc")
+		assert.Equal(t,isReject, true)
+		assert.Equal(t,reject.Code, int32(1))
+		assert.Equal(t,reject.PrivateDetails(), "privateDetails")
+	}
 }
 
 func a() error {

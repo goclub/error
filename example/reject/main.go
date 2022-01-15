@@ -37,8 +37,7 @@ func CreateUserUnsafeError(name string) error {
 }
 func CreateUserSafeReject(name string) error {
 	if name == "admin" {
-		// 没有 code 时 传 0
-		return xerr.Reject(0, "name can not be admin", false)
+		return xerr.Reject(1, "name can not be admin", false)
 	}
 	ak := "nimoc"
 	sk := "1234"
