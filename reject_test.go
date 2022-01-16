@@ -35,13 +35,13 @@ func TestAsReject(t *testing.T) {
 	}
 	{
 		err := func () error {
-			return xerr.RejectWithPrivateDetails(1, "abc", xerr.PrivateDetails{"privateDetails"})
+			return xerr.RejectWithPrivateDetails(1, "abc", xerr.PrivateDetails{[]string{"private info"}})
 		}()
 		reject, isReject := xerr.AsReject(err)
 		assert.Equal(t,reject.Message, "abc")
 		assert.Equal(t,isReject, true)
 		assert.Equal(t,reject.Code, int32(1))
-		assert.Equal(t,reject.PrivateDetails(), "privateDetails")
+		assert.Equal(t,reject.PrivateDetails(), []string{"private info"})
 	}
 }
 

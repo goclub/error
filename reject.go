@@ -7,11 +7,11 @@ import (
 	"testing"
 )
 type reject struct {
-	Code int32
-	Message string
-	ShouldRecord bool
-	// 设置私有字段防止被意外 json marshal 导致泄漏信息
-	privateDetails string
+	Code int32 `json:"-" xml:"-"`
+	Message string `json:"-" xml:"-"`
+	ShouldRecord bool `json:"-" xml:"-"`
+	// 设置私有字段防止被意外的暴露出去导致泄漏信息
+	privateDetails []string
 }
 func (reject reject) Error() string {
 	return strconv.Itoa(int(reject.Code))+ ":" + reject.Message
@@ -19,7 +19,7 @@ func (reject reject) Error() string {
 func (reject reject) Resp() Resp {
 	return NewResp(reject.Code, reject.Message)
 }
-func (reject reject) PrivateDetails() string {
+func (reject reject) PrivateDetails() []string {
 	return reject.privateDetails
 }
 func AsReject(err error) (rejectValue *reject, asReject bool) {
@@ -37,7 +37,7 @@ func Reject(code int32, publicMessage string, shouldRecord bool) error {
 		ShouldRecord: shouldRecord,
 	})
 }
-type PrivateDetails struct {PrivateDetail string}
+type PrivateDetails struct {PrivateDetail []string}
 func RejectWithPrivateDetails(code int32, publicMessage string, privateDetails PrivateDetails) (err error) {
 	if code == 0 {
 		log.Print("xerr.Reject(code, message, shouldRecord) code can not be zero")
