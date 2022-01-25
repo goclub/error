@@ -8,6 +8,15 @@ import (
 
 func TestAsReject(t *testing.T) {
 	{
+		// 验证 xerr.reject 符合 xerr.IRejecter
+		reject, isReject := xerr.AsReject(xerr.Reject(1, "", false))
+		if isReject {
+			func (rejecter xerr.IRejecter) {
+
+			}(reject)
+		}
+	}
+	{
 		var err error
 		err = nil
 		reject, isReject := xerr.AsReject(err)

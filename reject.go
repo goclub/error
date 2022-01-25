@@ -6,6 +6,13 @@ import (
 	"strconv"
 	"testing"
 )
+
+type IRejecter interface {
+	Error() string
+	Resp() Resp
+	PrivateDetails() []string
+}
+// reject 被设计成不公开类型,如果需要在自己的项目选中传递 reject,可以使用 IRejecter 接口传递
 type reject struct {
 	Code int32 `json:"-" xml:"-"`
 	Message string `json:"-" xml:"-"`
@@ -40,7 +47,7 @@ func Reject(code int32, publicMessage string, shouldRecord bool) error {
 type PrivateDetails struct {PrivateDetail []string}
 func RejectWithPrivateDetails(code int32, publicMessage string, privateDetails PrivateDetails) (err error) {
 	if code == 0 {
-		log.Print("xerr.Reject(code, message, shouldRecord) code can not be zero")
+		log.Print("xerr.Reject(code, message, shouldRecord) code can not be 0")
 		code = 1
 	}
 	return WithStack(&reject{
