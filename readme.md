@@ -1,9 +1,9 @@
-# goclub/error
-
 ---
 permalink: /
 sidebarBasedOnContent: true
 ---
+
+# goclub/error
 
 ```shell
 go get github.com/goclub/error
