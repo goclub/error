@@ -1,5 +1,10 @@
 # goclub/error
 
+---
+permalink: /
+sidebarBasedOnContent: true
+---
+
 ```shell
 go get github.com/goclub/error
 ```
