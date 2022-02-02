@@ -16,7 +16,7 @@ go get github.com/goclub/error
 2. xerror https://go.googlesource.com/proposal/+/master/design/29934-error-values.md
 
 
-在go2没推出之前,还建议是使用 pkg/error 
+在go2没推出之前,还建议是使用 pkg/error
 但是 pkg/errors 的 package name 是 errors ,这导致经常与标准库 的 errors 混淆.
 为了避免混淆 xerr 调用了pkg/error 部分方法,去掉了一些以后会不兼容或多余的方法.
 
@@ -45,9 +45,9 @@ go get github.com/goclub/error
 虽然 go http 路由一般都会在函数 panic 时候进行处理防止服务中断，但是 goroutine panic 如果没有 defer recover 会导致进程退出。
 
 应该记住 **只要执行 panic 就有极大可能中断程序**。
-   
 
-## sql.ErrNoRows 糟粕 
+
+## sql.ErrNoRows 糟粕
 
 应当 避免 sql.ErrNoRows 这种错误的设计
 
@@ -67,7 +67,7 @@ Sentinel 是哨兵的意思,哨兵这个名字取得很难理解.只有看过示
 // Sentinel Error
 if err != nil {
 	if xerr.Is(packageName.ErrName) {
-      // do some	
+      // do some
     } else {
     	return err
     }
@@ -90,7 +90,7 @@ func f3() error {
 
 ## 使用自定义错误类型携带更多的信息
 
-os标准库有很多自定义错误类型的用法： 
+os标准库有很多自定义错误类型的用法：
 
 [path_error](./example/path_error/main.go?embed)
 
@@ -98,6 +98,7 @@ os标准库有很多自定义错误类型的用法：
 
 为了解决自定义类型被 `fmt.Errorf` 后类型断言不准确的问题，使用`xerr.As()` 进行判断
 
+> 使用 As 时注意传递的是指针的指针
 
 ## reject
 
@@ -117,7 +118,7 @@ os标准库有很多自定义错误类型的用法：
 ## defer
 
 
-使用 defer 时需要注意不要赋值给 err 
+使用 defer 时需要注意不要赋值给 err
 ```go
 package main
 
