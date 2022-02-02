@@ -1,3 +1,8 @@
+---
+permalink: /
+sidebarBasedOnContent: true
+---
+
 # goclub/error
 
 ```shell
