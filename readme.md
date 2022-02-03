@@ -171,6 +171,10 @@ func CorrectCode(i int) (err error) {
 }
 ```
 
+## 陷阱 
+
+[trap](./example/trap/trap_test.go?embed)
+
 ## 最佳实践
 
 1. 除了启动(main)或者初始化(init)代码不要使用 panic ,尽量每个panic 代码旁都写上为什么 panic
