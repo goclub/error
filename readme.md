@@ -175,6 +175,12 @@ func CorrectCode(i int) (err error) {
 
 [trap](./example/trap/trap_test.go?embed)
 
+## 通过 Unhandled error  的提示避免漏写 return 
+
+参考: https://pkg.go.dev/github.com/goclub/sql#TxResult.Error
+
+> @TODO 等更新了 sql 事务的教程后再加上 sql 事务链接说明
+
 ## 最佳实践
 
 1. 除了启动(main)或者初始化(init)代码不要使用 panic ,尽量每个panic 代码旁都写上为什么 panic
