@@ -34,6 +34,14 @@ func main() {
 	log.Print("ifSemicolon: ", ifSemicolon())
 	// MultipleReturnValue: unexpected end of JSON input
 	log.Print("MultipleReturnValue: ", MultipleReturnValue())
+
+	// 你可以在 IDE 中加入 live templates
+	// 快捷键/缩写: e
+	/* 模版内容:
+	if err = $END$; err != nil {
+			return
+		}
+	*/
 }
 
 // normal: 常见的错误返回
