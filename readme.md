@@ -27,6 +27,12 @@ go get github.com/goclub/error
 
 源码: [./error.go?embed](./error.go)
 
+## 使用if分号避免未处理的错误
+
+> Use if semicolon avoid unhandled error
+
+[if semicolon](./example/if_semicolon/main.go?embed)
+
 ## error  和 panic
 
 > 只要执行 panic 就极大可能导致程序中断进程退出  
@@ -105,6 +111,7 @@ os标准库有很多自定义错误类型的用法：
 
 > 使用 As 时注意传递的是指针的指针
 
+
 ## reject
 
 在日常的开发中有很多业务逻辑信息需要传递给客户端，例如创建用户时手机号码已存在。
@@ -171,15 +178,16 @@ func CorrectCode(i int) (err error) {
 }
 ```
 
-## 陷阱 
+## 作用域陷阱
 
 [trap](./example/trap/trap_test.go?embed)
 
-## 通过 Unhandled error  的提示避免漏写 return 
+## 通过 Unhandled error 的提示避免漏写 return 
 
 参考: https://pkg.go.dev/github.com/goclub/sql#TxResult.Error
 
 > @TODO 等更新了 sql 事务的教程后再加上 sql 事务链接说明
+ 
 
 ## 最佳实践
 
