@@ -13,7 +13,6 @@ func main() {
 	// 常见的代码
 	// normal: unexpected end of JSON input
 	log.Print("normal: ", normal())
-
 	// 错误的代码
 	// badCode: <nil>
 	log.Print("badCode: ", badCode())
@@ -84,6 +83,6 @@ func MultipleReturnValue() (err error) {
 	return
 	// if semicolon 的缺点是遇到多返回值时不能使用短变量声明 :=
 	// 如果使用短变量声明:  if b, err := json.Marshal(1); err != nil {
-	// "if b," 处 会出现编译期报错 Unused variable 'b'
-	// 瑕不掩瑜,不用短声明换取不出现"意外移除 err != nil"导致的bug是值得的
+	// b 就变为了 if 内部变量,并且 "if b," 处 会出现编译期报错 Unused variable 'b'
+	// 但是瑕不掩瑜,不用短声明换取不出现"意外移除 err != nil"导致的bug是值得的
 }
